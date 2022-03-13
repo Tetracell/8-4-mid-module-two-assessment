@@ -121,9 +121,9 @@ function filterByGenre(movies, genre) { //Good, ugly?
     genre2 = genre2.map((x) => {
       x = x.toLowerCase(); //Set all to lowercase       
       x = x.trim();
-      return x;
+      return x; //Returns everything back to the new and improved genre2 array
     });
-    if (genre2.find((x) => x == genre)) {
+    if (genre2.find((x) => x == genre)) { //Trying to find genre within the genre2 array, with genre2 passed in as 'x'
       return movie;
     }
   });
