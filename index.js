@@ -110,7 +110,7 @@ function findById(movies, id) { // Good
  *  filterByGenre(movies, "Horror")
  *  //> []
  */
-function filterByGenre(movies, genre) { //Good, ugly?
+function filterByGenre(movies, genre) { //Good, ugly? -- Shorten this sometime, forgot .includes() exists
   if (!movies.length) {
     throw "Empty array";
   }
@@ -158,7 +158,7 @@ function getAllMoviesReleasedAtOrBeforeYear(movies, year) { //Good
   }
   return movies.filter((movie) => {
     let released = movie.released.split(' '); //Split the released value
-    if (parseInt(released[2]) <= year) { //Parse the year as integer, compare to year
+    if (parseInt(released[2]) <= year) { //Parse the year as integer, compare to year. I hope this doesn't count as a hard coded value, assuming that the date will always be laid out the same and the year will be at index 2.
       return movie;
     }
   });
