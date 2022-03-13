@@ -82,11 +82,10 @@ function checkIfAnyMovieHasRating(movies, rating = 'G') { //Good
       // Toy Story 4
     };
  */
-function findById(movies, id) { // -1
+function findById(movies, id) { // Good
   if (!movies.length) throw "No movies";
   const movieFinder = movies.find((movie) => movie.imdbID == id);
-  // Don't forget about if the movie can't be found
-  return movieFinder;
+  return (movieFinder == undefined ? null : movieFinder); // if movieFinder == undefined return null ELSE return movieFinder
 }
 
 /**
@@ -111,22 +110,24 @@ function findById(movies, id) { // -1
  *  filterByGenre(movies, "Horror")
  *  //> []
  */
-function filterByGenre(movies, genre) { //Bad
+function filterByGenre(movies, genre) { //Good, ugly?
   if (!movies.length) {
     throw "Empty array";
   }
-
   genre = genre.toLowerCase();
 
-  const filtered = movies.filter((movie) => {
+  return movies.filter((movie) => {
     let genre2 = movie.genre.split(','); //Split into array of strings
-    genre2 = genre2.map((x) => x.toLowerCase()); //Set all to lowercase
-    //....?
-    // 4: Profit
+    genre2 = genre2.map((x) => {
+      x = x.toLowerCase(); //Set all to lowercase       
+      x = x.trim();
+      return x;
+    });
+    if (genre2.find((x) => x == genre)) {
+      return movie;
+    }
   });
 }
-
-
 /**
  * getAllMoviesReleasedAtOrBeforeYear()
  * -----------------------------
@@ -152,17 +153,16 @@ function filterByGenre(movies, genre) { //Bad
     ];
  */
 function getAllMoviesReleasedAtOrBeforeYear(movies, year) { //Good
-  if (!movies){
+  if (!movies) {
     throw "Error";
   }
   return movies.filter((movie) => {
-    let released = movie.released.split(' ');
-    if (parseInt(released[2]) <= year){
+    let released = movie.released.split(' '); //Split the released value
+    if (parseInt(released[2]) <= year) { //Parse the year as integer, compare to year
       return movie;
     }
-  })
+  });
 }
-
 /**
  * checkMinMetascores()
  * -----------------------------
@@ -178,7 +178,7 @@ function getAllMoviesReleasedAtOrBeforeYear(movies, year) { //Good
  *  //>  false
  */
 function checkMinMetascores(movies, metascore) { //Good
-  if (!movies){
+  if (!movies) {
     throw "Error";
   }
   return movies.every((movie) => parseInt(movie.metascore) >= metascore);
@@ -208,7 +208,19 @@ function checkMinMetascores(movies, metascore) { //Good
       { "James and the Giant Peach": "91%" },
     ];
  */
-function getRottenTomatoesScoreByMovie(movies) {}
+function getRottenTomatoesScoreByMovie(movies) { // Good
+  if (!movies.length) {
+    throw "Error bruv";
+  }
+  return movies.map((movie) => {
+    let rtScore = movie.ratings.find((rating) => rating.source == "Rotten Tomatoes").value;
+    //Above line originally rtscore = movie.find((movie) => movie.ratings.source == "Rotten Tomatoes") Was too shallow, remember to dig greedily and deep - there lies Mithril.
+    let newMovies = {
+      [movie.title]: rtScore
+    }
+    return newMovies;
+  });
+}
 
 // Do not change anything below this line.
 module.exports = {
