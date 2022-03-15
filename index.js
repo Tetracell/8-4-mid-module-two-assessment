@@ -33,7 +33,7 @@ const exampleMovies = require("./movies");
  */
 function getAllMovieTitles(movies) { //Good
   if (!movies.length) {
-    throw "Movies is empty";
+    throw "ERROR : Invalid value passed";
   }
   let titles = movies.map((movie) => {
     return movie.title;
@@ -61,7 +61,7 @@ function getAllMovieTitles(movies) { //Good
  */
 function checkIfAnyMovieHasRating(movies, rating = 'G') { //Good
   if (!movies.length) {
-    throw "No movies";
+    throw "ERROR : Invalid value passed";
   }
   return movies.some((movie) => movie.rated == rating);
 }
@@ -83,7 +83,7 @@ function checkIfAnyMovieHasRating(movies, rating = 'G') { //Good
     };
  */
 function findById(movies, id) { // Good
-  if (!movies.length) throw "No movies";
+  if (!movies.length) throw "ERROR : Invalid value passed";
   const movieFinder = movies.find((movie) => movie.imdbID == id);
   return (movieFinder == undefined ? null : movieFinder); // if movieFinder == undefined return null ELSE return movieFinder
 }
@@ -112,7 +112,7 @@ function findById(movies, id) { // Good
  */
 function filterByGenre(movies, genre) { //Good, ugly? -- Shorten this sometime, forgot .includes() exists
   if (!movies.length) {
-    throw "Empty array";
+    throw "ERROR : Invalid value passed";
   }
   genre = genre.toLowerCase();
 
@@ -154,7 +154,7 @@ function filterByGenre(movies, genre) { //Good, ugly? -- Shorten this sometime, 
  */
 function getAllMoviesReleasedAtOrBeforeYear(movies, year) { //Good
   if (!movies) {
-    throw "Error";
+    throw "ERROR : Invalid value passed";
   }
   return movies.filter((movie) => {
     let released = movie.released.split(' '); //Split the released value
@@ -179,7 +179,7 @@ function getAllMoviesReleasedAtOrBeforeYear(movies, year) { //Good
  */
 function checkMinMetascores(movies, metascore) { //Good
   if (!movies) {
-    throw "Error";
+    throw "ERROR : Invalid value passedror";
   }
   return movies.every((movie) => parseInt(movie.metascore) >= metascore);
 }
@@ -210,15 +210,12 @@ function checkMinMetascores(movies, metascore) { //Good
  */
 function getRottenTomatoesScoreByMovie(movies) { // Good
   if (!movies.length) {
-    throw "Error bruv";
+    throw "ERROR : Invalid value passed";
   }
   return movies.map((movie) => {
-    let rtScore = movie.ratings.find((rating) => rating.source == "Rotten Tomatoes").value;
-    //Above line originally rtscore = movie.find((movie) => movie.ratings.source == "Rotten Tomatoes") Was too shallow, remember to dig greedily and deep - there lies Mithril.
-    let newMovies = {
-      [movie.title]: rtScore
-    }
-    return newMovies;
+    //Below line originally rtscore = movie.find((movie) => movie.ratings.source == "Rotten Tomatoes") Was too shallow, remember to dig greedily and deep - there lies Mithril.
+    let rtScore = movie.ratings.find((rating) => rating.source == "Rotten Tomatoes").value;    
+    return {[movie.title]: rtScore};
   });
 }
 
