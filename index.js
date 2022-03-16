@@ -117,17 +117,23 @@ function filterByGenre(movies, genre) { //Good, ugly? -- Shorten this sometime, 
   genre = genre.toLowerCase();
 
   return movies.filter((movie) => {
-    let genre2 = movie.genre.split(','); //Split into array of strings
-    genre2 = genre2.map((x) => {
-      x = x.toLowerCase(); //Set all to lowercase       
+    let genreSplit = movie.genre.toLowerCase(); //Split into array of strings
+    if (genreSplit.includes(genre)){
+      return movie;
+    } else {
+      return [];
+    }
+    genreSplit = genreSplit.map((x) => {
+      x = x.toLowerCase();        
       x = x.trim();
-      return x; //Returns everything back to the new and improved genre2 array
+      return x; 
     });
-    if (genre2.find((x) => x == genre)) { //Trying to find genre within the genre2 array, with genre2 passed in as 'x'
+    if (genreSplit.find((x) => x == genre)) { //Trying to find genre within the genre2 array, with genre2 passed in as 'x'
       return movie;
     }
   });
 }
+
 /**
  * getAllMoviesReleasedAtOrBeforeYear()
  * -----------------------------
@@ -152,8 +158,9 @@ function filterByGenre(movies, genre) { //Good, ugly? -- Shorten this sometime, 
       }
     ];
  */
+
 function getAllMoviesReleasedAtOrBeforeYear(movies, year) { //Good
-  if (!movies) {
+  if (!movies.length) {
     throw "ERROR : Invalid value passed";
   }
   return movies.filter((movie) => {
@@ -163,6 +170,7 @@ function getAllMoviesReleasedAtOrBeforeYear(movies, year) { //Good
     }
   });
 }
+
 /**
  * checkMinMetascores()
  * -----------------------------
@@ -177,9 +185,10 @@ function getAllMoviesReleasedAtOrBeforeYear(movies, year) { //Good
  *  checkMinMetascores(movies, 90));
  *  //>  false
  */
+
 function checkMinMetascores(movies, metascore) { //Good
-  if (!movies) {
-    throw "ERROR : Invalid value passedror";
+  if (!movies.length) {
+    throw "ERROR : Invalid value passed";
   }
   return movies.every((movie) => parseInt(movie.metascore) >= metascore);
 }
@@ -208,13 +217,14 @@ function checkMinMetascores(movies, metascore) { //Good
       { "James and the Giant Peach": "91%" },
     ];
  */
+
 function getRottenTomatoesScoreByMovie(movies) { // Good
   if (!movies.length) {
     throw "ERROR : Invalid value passed";
   }
   return movies.map((movie) => {
     //Below line originally rtscore = movie.find((movie) => movie.ratings.source == "Rotten Tomatoes") Was too shallow, remember to dig greedily and deep - there lies Mithril.
-    let rtScore = movie.ratings.find((rating) => rating.source == "Rotten Tomatoes").value;    
+    const rtScore = movie.ratings.find((rating) => rating.source == "Rotten Tomatoes").value;    
     return {[movie.title]: rtScore};
   });
 }
