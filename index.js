@@ -118,11 +118,6 @@ function filterByGenre(movies, genre) { //Good, ugly? -- Shorten this sometime, 
 
   return movies.filter((movie) => {
     let genreSplit = movie.genre.toLowerCase(); //Split into array of strings
-    if (genreSplit.includes(genre)){
-      return movie;
-    } else {
-      return [];
-    }
     genreSplit = genreSplit.map((x) => {
       x = x.toLowerCase();        
       x = x.trim();
